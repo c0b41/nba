@@ -1,4 +1,4 @@
-# NCAAM
+# NBA
 
 > Simple basketball scores and schedules.
 
@@ -13,11 +13,10 @@ This site was built live on my stream.
 
 ## APIs
 
-- https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/66
-- https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/66/schedule
-- https://site.api.espn.com/apis/v2/sports/basketball/mens-college-basketball/standings
-- https://site.web.api.espn.com/apis/v2/sports/basketball/mens-college-basketball/standings?region=us&lang=en&contentorigin=espn&group=50&season=2022
-- https://site.web.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard/conferences
+- https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/10
+- https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/10/schedule
+- https://site.api.espn.com/apis/v2/sports/basketball/nba/standings
+- https://site.web.api.espn.com/apis/v2/sports/basketball/nba/standings?region=us&lang=en&contentorigin=espn&group=29&season=2024
 
 ## Overview
 

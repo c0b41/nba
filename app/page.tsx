@@ -74,7 +74,7 @@ function Row({
 
 async function Schedule() {
   const [team, allTeams] = await Promise.all([
-    getTeamData('66'),
+    getTeamData('10'), // rockets
     getAllTeamIds(),
   ]);
   const { name, record, color, standing, games, logo } = team;

@@ -4,8 +4,8 @@ import { BottomNav } from './navbar';
 
 export const metadata = {
   title: {
-    default: 'NCCAM Scores & Schedules',
-    template: '%s | NCCAM Scores & Schedules',
+    default: 'NBA Scores & Schedules',
+    template: '%s | NBA Scores & Schedules',
   },
   description: 'Like ESPN, but streamlined.',
 };

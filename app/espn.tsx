@@ -86,7 +86,7 @@ export async function getTeamData(teamId: string): Promise<TeamData> {
   }
 
   const res = await fetch(
-    `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${teamId}/schedule`
+    `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/${teamId}/schedule`
   );
 
   if (!res.ok) {
@@ -110,23 +110,25 @@ export async function getTeamData(teamId: string): Promise<TeamData> {
     const logo = otherTeam.team.logos?.[0]?.href ?? DEFAULT_LOGO;
 
     const date = new Date(event.competitions[0].date);
-    const formattedDate = date.toLocaleDateString('en-US', {
+    const formattedDate = date.toLocaleDateString('TR', {
+      year: 'numeric',
       month: 'numeric',
       day: 'numeric',
     });
     const formattedTime =
-      date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
+      date.toLocaleTimeString('TR', {
+        hour: '2-digit',
         minute: '2-digit',
-        timeZone: 'America/Chicago',
-      }) + ' CT';
+        timeZone: 'Europe/Istanbul',
+        hour12: false 
+      }) + ' TS';
 
     return {
       id: event.competitions[0].id,
       date: `${formattedDate} - ${formattedTime}`,
       name: otherTeam.team.displayName,
       teamId: otherTeam.team.id,
-      rank: otherTeam.curatedRank.current,
+      rank: null, //otherTeam?.curatedRank?.current
       logo,
       color,
       homeScore: favoriteTeam.score?.value,
@@ -152,7 +154,7 @@ export async function getAllTeamIds(): Promise<TeamBasicInfo[]> {
 
   const pagePromises = Array.from({ length: 8 }, (_, i) =>
     fetch(
-      `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams?page=${i + 1}`
+      `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams?page=${i + 1}`
     ).then((res) => {
       if (!res.ok) {
         throw new Error(`Failed to fetch team IDs: ${res.statusText}`);
@@ -174,7 +176,7 @@ export async function getTodaySchedule() {
   cacheLife('seconds');
 
   const res = await fetch(
-    'https://site.web.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard'
+    'https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard'
   );
 
   if (!res.ok) {
@@ -193,16 +195,18 @@ export async function getTodaySchedule() {
     }
 
     const date = new Date(event.date);
-    const formattedDate = date.toLocaleDateString('en-US', {
+    const formattedDate = date.toLocaleDateString('TR', {
+      year: 'numeric',
       month: 'numeric',
       day: 'numeric',
     });
     const formattedTime =
-      date.toLocaleTimeString('en-US', {
+      date.toLocaleTimeString('TR', {
         hour: 'numeric',
         minute: '2-digit',
-        timeZone: 'America/Chicago',
-      }) + ' CT';
+        timeZone: 'Europe/Istanbul',
+        hour12: false 
+      }) + ' TS';
 
     return {
       status: event.competitions[0].status.type.shortDetail,
@@ -221,7 +225,7 @@ function formatTeamData(teamData: CompetitorData) {
   return {
     name: teamData.team.displayName,
     teamId: teamData.team.id,
-    rank: teamData.curatedRank.current,
+    rank: null, //teamData.curatedRank.current,
     logo: teamData.team.logo ?? DEFAULT_LOGO,
     color: getTeamColor(teamData.team.displayName),
     score: teamData.score,
@@ -239,7 +243,7 @@ export async function getConferenceRankings(): Promise<
   cacheLife('hours');
 
   const res = await fetch(
-    'https://site.web.api.espn.com/apis/v2/sports/basketball/mens-college-basketball/standings?region=us&lang=en&contentorigin=espn&group=8&season=2024'
+    'https://site.web.api.espn.com/apis/v2/sports/basketball/nba/standings?region=us&lang=en&contentorigin=espn&group=29&season=2024'
   );
 
   if (!res.ok) {
@@ -248,7 +252,10 @@ export async function getConferenceRankings(): Promise<
 
   const data = await res.json();
 
-  let teamsData = data.standings.entries.map((entry: any) => {
+  let region = data.children[0] // East
+
+
+  let teamsData = region.standings.entries.map((entry: any) => {
     const { team, stats } = entry;
 
     return {
